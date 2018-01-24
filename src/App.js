@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 
-const baseUrl = "localhost";
+const baseUrl = "http://127.0.0.1:80";
 
 class App extends Component {
   constructor(props){
