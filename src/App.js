@@ -1,18 +1,44 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+const baseUrl = "localhost";
+
 class App extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      playing: false,
+      errorMessage: ''
+    }
+  }
+
+  handleClick(){
+    fetch(`${baseUrl}/${!this.state.playing ? "play":"stop"}`)
+      .then(response => {
+        if(response.status === 200){
+          this.setState({playing: !this.state.playing})
+        }else if(response.status >= 400){
+          this.setState({errorMessage: "Error"})
+        }
+      })
+      .catch(error => {
+        this.setState({errorMessage: "Error"})
+      })
+  }
+  renderError(){
+    if(this.errorMessage){
+      return <div>{this.state.errorMessage}</div>
+    } else {
+      return <div></div>
+    }
+  }
   render() {
+    var errorMessage = this.renderError();
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-					<p>Welcome to my app!</p>
-        </p>
+        <h1 className="App-title">Welcome to Reaktor Web application</h1>
+        <button onClick={() => this.handleClick()}>{this.state.playing ? "Play":"Stop"}</button>
+        {errorMessage}
       </div>
     );
   }
