@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 
-const baseUrl = "http://192.168.0.14";
+const baseUrl = "localhost";
 
 class App extends Component {
   constructor(props){
@@ -13,13 +13,17 @@ class App extends Component {
   }
 
   handleClick(){
-    fetch(`${baseUrl}/?music_playing=${!this.state.playing}`).then(response => {
-      if(response.status === 200){
-        this.setState({playing: !this.state.playing})
-      }else if(response.status >= 400){
+    fetch(`${baseUrl}/${!this.state.playing ? "play":"stop"}`)
+      .then(response => {
+        if(response.status === 200){
+          this.setState({playing: !this.state.playing})
+        }else if(response.status >= 400){
+          this.setState({errorMessage: "Error"})
+        }
+      })
+      .catch(error => {
         this.setState({errorMessage: "Error"})
-      }
-    });
+      })
   }
   renderError(){
     if(this.errorMessage){
